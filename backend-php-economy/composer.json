@@ -1,0 +1,35 @@
+{
+    "name": "elev8/php-economy-backend",
+    "description": "CodeIgniter 4 Economy API for the Elev8 Platform",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": "^8.1",
+        "codeigniter4/framework": "^4.4"
+    },
+    "require-dev": {
+        "fakerphp/faker": "^1.9.2",
+        "mikey179/vfsstream": "^1.6",
+        "phpunit/phpunit": "^10.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        },
+        "exclude-from-classmap": [
+            "**/Database/Migrations/**"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    }
+}

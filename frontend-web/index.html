@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="build-version" content="2026-03-03T15:10:00-central-bank-ui" />
+    <meta name="theme-color" content="#1a2c38" />
+    <title>ELEV8 | World Class Casino</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700&display=swap"
+        rel="stylesheet">
+    <script>
+        // Prevent flash of wrong theme
+        (function () {
+            var mode = localStorage.getItem('elev8-theme-mode');
+            if (mode === 'light') {
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>

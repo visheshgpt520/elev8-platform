@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Kill ALL CSS transitions while a View Transition is running ──
+   This prevents elements from animating their colors behind the
+   clip-path ripple, which causes flicker and choppiness.           */
+html::view-transition-old(root),
+html::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+html.dark::view-transition-old(root) {
+    z-index: 1;
+}
+
+html.dark::view-transition-new(root) {
+    z-index: 2147483646;
+}
+
+html:not(.dark)::view-transition-old(root) {
+    z-index: 2147483646;
+}
+
+html:not(.dark)::view-transition-new(root) {
+    z-index: 1;
+}
+
+@layer base {
+    body {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+@layer utilities {
+    .glass-panel {
+        background: rgba(var(--bg-secondary-rgb, 15, 23, 42), 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 1rem;
+        box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    }
+
+    .dark .glass-panel {
+        background: rgba(15, 23, 42, 0.6);
+    }
+
+    html:not(.dark) .glass-panel {
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .text-gradient {
+        @apply bg-clip-text text-transparent;
+        background-image: linear-gradient(to right, #06b6d4, #8b5cf6);
+    }
+
+    .glowing-button {
+        @apply relative overflow-hidden text-white font-display font-semibold transition-all duration-300;
+        background-color: #8b5cf6;
+    }
+
+    .glowing-button:hover {
+        box-shadow: 0 0 20px var(--accent-glow);
+        @apply transform -translate-y-1;
+        background-image: linear-gradient(to right, #06b6d4, #8b5cf6);
+    }
+
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/* Ticker / Marquee Animation */
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.animate-marquee {
+    animation: marquee 30s linear infinite;
+}
+
+/* Soft Pulse Animation */
+@keyframes soft-pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.animate-soft-pulse {
+    animation: soft-pulse 2s ease-in-out infinite;
+}

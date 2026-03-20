@@ -1,0 +1,23 @@
+services:
+  # 1. PHP Economy Logic (REST API)
+  - type: web
+    name: elev8-php-economy
+    env: docker
+    plan: free
+    region: ohio # Default US region
+    dockerfilePath: ./backend-php-economy/Dockerfile
+    envVars:
+      - key: CI_ENVIRONMENT
+        value: production
+
+  # 2. Node.js Realtime Socket Server
+  - type: web
+    name: elev8-node-realtime
+    env: docker
+    plan: free
+    region: ohio
+    dockerContext: ./backend-node-realtime
+    dockerfilePath: ./backend-node-realtime/Dockerfile
+    envVars:
+      - key: PORT
+        value: 3001

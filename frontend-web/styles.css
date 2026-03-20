@@ -1,0 +1,165 @@
+:root,
+[data-theme="stake"] {
+  /* Defaulting the App to Web3 Crypto Casino Dark Neon Aesthetic */
+  --bg-primary: #1e293b;
+  --bg-secondary: #0f172a;
+  --bg-app: #0B0E14;
+  --bg-tertiary: #131a38;
+  --bg-nav: #131722;
+
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --text-muted: #5f7096;
+
+  --brand: #8b5cf6;
+  /* Shuffle Neon Purple */
+  --brand-hover: #a78bfa;
+  --brand-glow: rgba(139, 92, 246, 0.4);
+
+  --border-color: #1e293b;
+  --border-accent: rgba(139, 92, 246, 0.2);
+
+  --success: #10b981;
+  /* Clean emerald for indicators */
+  --warning: #f59e0b;
+  --danger: #ef4444;
+
+  --font-family-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-family-display: 'Outfit', system-ui, -apple-system, sans-serif;
+}
+
+/* Light Mode — only active when .dark class is NOT on <html> */
+html:not(.dark),
+html:not(.dark) [data-theme="stake"] {
+  --bg-primary: #f1f5f9;
+  --bg-secondary: #e2e8f0;
+  --bg-app: #F8FAFC;
+  --bg-tertiary: #e2e8f0;
+  --bg-nav: #ffffff;
+
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+
+  --border-color: #e2e8f0;
+  --border-accent: rgba(139, 92, 246, 0.15);
+}
+
+[data-theme="roobet"] {
+  --bg-primary: #191c24;
+  --bg-secondary: #222530;
+  --bg-app: #1d202a;
+  --bg-tertiary: #2d3142;
+  --bg-nav: #222530;
+  --text-primary: #ffffff;
+  --text-secondary: #c2c6d2;
+  --text-muted: #8b92a5;
+  --brand: #e5c365;
+  --brand-hover: #fcd535;
+  --brand-glow: rgba(229, 195, 101, 0.4);
+  --border-color: rgba(255, 255, 255, 0.05);
+  --border-accent: rgba(229, 195, 101, 0.2);
+  --success: #e5c365;
+}
+
+[data-theme="duelbits"] {
+  --bg-primary: #090e13;
+  --bg-secondary: #0c151d;
+  --bg-app: #0e1923;
+  --bg-tertiary: #142331;
+  --bg-nav: #0c151d;
+  --text-primary: #ffffff;
+  --text-secondary: #a3adb7;
+  --text-muted: #627284;
+  --brand: #00e701;
+  --brand-hover: #00ff01;
+  --brand-glow: rgba(0, 231, 1, 0.4);
+  --border-color: rgba(255, 255, 255, 0.05);
+  --border-accent: rgba(0, 231, 1, 0.2);
+  --success: #00e701;
+}
+
+[data-theme="shuffle"] {
+  --bg-primary: #060814;
+  --bg-secondary: #090c1d;
+  --bg-app: #0c1126;
+  --bg-tertiary: #131a38;
+  --bg-nav: #090c1d;
+  --text-primary: #ffffff;
+  --text-secondary: #a4b1cd;
+  --text-muted: #5f7096;
+  --brand: #8e44ff;
+  --brand-hover: #9d5cff;
+  --brand-glow: rgba(142, 68, 255, 0.4);
+  --border-color: rgba(255, 255, 255, 0.05);
+  --border-accent: rgba(142, 68, 255, 0.2);
+  --success: #1fff20;
+}
+
+[data-theme="neon"] {
+  --bg-primary: #0d0221;
+  --bg-secondary: #160436;
+  --bg-app: #1c0542;
+  --bg-tertiary: #2a0862;
+  --bg-nav: #160436;
+  --text-primary: #ffffff;
+  --text-secondary: #ffb8d2;
+  --text-muted: #a67bc4;
+  --brand: #ff007f;
+  --brand-hover: #ff3399;
+  --brand-glow: rgba(255, 0, 127, 0.4);
+  --border-color: rgba(255, 0, 127, 0.2);
+  --border-accent: rgba(0, 255, 255, 0.5);
+  /* Cyan accents */
+  --success: #00ffff;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-family-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Glassmorphism utility classes */
+.glass-panel {
+  background: rgba(20, 20, 23, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Hide scrollbars globally for a cleaner layout */
+::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari and Opera */
+}
+
+* {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+/* Explicit scrollbar-hide utility for specific elements */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
