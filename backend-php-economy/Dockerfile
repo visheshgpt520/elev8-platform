@@ -7,7 +7,8 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     libpng-dev \
-    && docker-php-ext-install pdo pdo_mysql mysqli \
+    libicu-dev \
+    && docker-php-ext-install pdo pdo_mysql mysqli intl \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Composer
