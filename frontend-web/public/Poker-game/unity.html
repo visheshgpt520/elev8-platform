@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Lets Card Best</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden; 
+        background-color: #f5221a; 
+      }
+      @media only screen and (orientation: portrait) {
+        #unity-container {
+          display: none !important;
+        }
+
+        .landscape-message {
+          display: block !important;
+          font-size: 20px !important;
+          text-align: center !important;
+          color: white !important;
+          padding: 10px !important;
+          position: absolute !important;
+          top: 50% !important;
+          left: 50% !important;
+          transform: translate(-50%, -50%) !important; 
+        }
+      }
+
+      .landscape-message {
+        display: none;
+      }
+      
+      /* ============================================================
+         DEEP-LINK GLOBAL LOADER - Persistent until game scene ready
+         Shows ONLY ONE loading screen for seamless deep-link experience
+         ============================================================ */
+      #global-loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #f5221a;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        transition: opacity 0.3s ease-out;
+      }
+      
+      #global-loader.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      
+      #global-loader .loader-logo {
+        width: 150px;
+        height: 150px;
+        margin-bottom: 30px;
+      }
+      
+      #global-loader .loader-spinner {
+        width: 50px;
+        height: 50px;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top: 4px solid #ffffff;
+        border-radius: 50%;
+        animation: global-spin 1s linear infinite;
+      }
+      
+      #global-loader .loader-text {
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        margin-top: 20px;
+        opacity: 0.9;
+      }
+      
+      @keyframes global-spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+
+
+  </head>
+  <body class="dark">
+    <!-- ============================================================
+         GLOBAL LOADER - Persistent until game scene is fully ready
+         Only shown during deep-link mode (?game=xxx)
+         Hidden by Unity C# calling hideGlobalLoader() via jslib
+         ============================================================ -->
+    <div id="global-loader" style="display: none;">
+      <img class="loader-logo" src="logo.png" alt="Loading...">
+      <div class="loader-spinner"></div>
+      <div class="loader-text">Loading Game...</div>
+    </div>
+    
+    <div class="landscape-message">
+      Please rotate your device to landscape mode to play the game.
+    </div>
+    <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas"></canvas>
+    </div>
+
+    <!-- Hidden file input container for the gallery -->
+    <div id="fileInputContainer" style="display: none;">
+      <input type="file" id="imageInput" accept="image/*" onchange="onImageSelected(event)">
+    </div>
+
+    <div id="loading-cover" style="display:none;">
+      <div id="unity-loading-bar">
+        <div id="unity-logo">
+          <img src="logo.png">
+        </div>
+        <div id="unity-progress-bar-empty" style="display: none;">
+          <div id="unity-progress-bar-full"></div>
+        </div>
+        <div class="spinner"></div>
+      </div>
+    </div>
+    <div id="unity-fullscreen-button" style="display: none;"></div>
+
+    <script>
+      const hideFullScreenButton = "";
+      const buildUrl = "Build";
+      const loaderUrl = buildUrl + "/Poker Build.loader.js";
+      const config = {
+        dataUrl: buildUrl + "/Poker Build.data",
+        frameworkUrl: buildUrl + "/Poker Build.framework.js",
+        codeUrl: buildUrl + "/Poker Build.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "DefaultCompany",
+        productName: "Lets Card Best",
+        productVersion: "1.0.1",
+      };
+
+      const container = document.querySelector("#unity-container");
+      const canvas = document.querySelector("#unity-canvas");
+      const loadingCover = document.querySelector("#loading-cover");
+      const progressBarEmpty = document.querySelector("#unity-progress-bar-empty");
+      const progressBarFull = document.querySelector("#unity-progress-bar-full");
+      const fullscreenButton = document.querySelector("#unity-fullscreen-button");
+      const spinner = document.querySelector('.spinner');
+
+      const canFullscreen = (function() {
+        for (const key of [
+            'exitFullscreen',
+            'webkitExitFullscreen',
+            'webkitCancelFullScreen',
+            'mozCancelFullScreen',
+            'msExitFullscreen',
+          ]) {
+          if (key in document) {
+            return true;
+          }
+        }
+        return false;
+      }());
+
+      // if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+      //   container.className = "unity-mobile";
+      //   config.devicePixelRatio = 1;
+      // }
+      loadingCover.style.display = "";
+
+      let unityInstance = null;
+      let unityInstanceReady = false;
+      
+      // ============================================================
+      // DEEP-LINK GLOBAL LOADER FUNCTIONS
+      // Called from Unity C# via jslib to control the persistent loader
+      // ============================================================
+      
+      // Check if this is a deep-link launch (has ?game= parameter)
+      function isDeepLinkLaunch() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.has('game') && urlParams.get('game').length > 0;
+      }
+      
+      // Show the global loader (called on page load for deep-link)
+      function showGlobalLoader() {
+        const loader = document.getElementById('global-loader');
+        if (loader) {
+          loader.style.display = 'flex';
+          loader.classList.remove('hidden');
+          console.log('[GlobalLoader] Shown');
+        }
+      }
+      
+      // Hide the global loader (called from Unity when game scene is ready)
+      function hideGlobalLoader() {
+        const loader = document.getElementById('global-loader');
+        if (loader) {
+          loader.classList.add('hidden');
+          // Remove from DOM after fade animation
+          setTimeout(function() {
+            loader.style.display = 'none';
+            console.log('[GlobalLoader] Hidden');
+          }, 300);
+        }
+      }
+      
+      // Update loader text (optional, called from Unity)
+      function updateGlobalLoaderText(text) {
+        const textEl = document.querySelector('#global-loader .loader-text');
+        if (textEl) {
+          textEl.textContent = text;
+        }
+      }
+      
+      // Initialize: Show global loader only for deep-link launches
+      if (isDeepLinkLaunch()) {
+        showGlobalLoader();
+        console.log('[GlobalLoader] Deep-link detected, showing persistent loader');
+      }
+      
+      // ============================================================
+      // SINGLE-GAME LOCK SYSTEM
+      // Enforces one active game per browser session
+      // When a second game opens, the first one auto-closes
+      // ============================================================
+      (function () {
+        const LOCK_KEY = "ACTIVE_CASINO_GAME";
+        const game = new URLSearchParams(window.location.search).get("game") || "lobby";
+        const instanceId = Date.now() + "_" + Math.random().toString(36).slice(2);
+        
+        window.__GAME_INSTANCE_ID__ = instanceId;
+        
+        // Notify existing game (if any) to close
+        const existing = localStorage.getItem(LOCK_KEY);
+        if (existing) {
+          try {
+            const existingData = JSON.parse(existing);
+            console.log('[GameGuard] Found existing game:', existingData.game, '- signaling close');
+          } catch (e) {}
+          
+          localStorage.setItem(LOCK_KEY, JSON.stringify({
+            game: game,
+            instanceId: instanceId,
+            forceClose: true,
+            time: Date.now()
+          }));
+        }
+        
+        // Small delay then register this game as active (without forceClose)
+        setTimeout(function() {
+          localStorage.setItem(LOCK_KEY, JSON.stringify({
+            game: game,
+            instanceId: instanceId,
+            forceClose: false,
+            time: Date.now()
+          }));
+        }, 100);
+        
+        // Listen for close signal from another tab
+        window.addEventListener("storage", function (e) {
+          if (e.key !== LOCK_KEY || !e.newValue) return;
+          
+          try {
+            const data = JSON.parse(e.newValue);
+            if (data.instanceId !== instanceId && data.forceClose) {
+              console.warn("[GameGuard] Another game opened (" + data.game + "). Closing this game.");
+              
+              // Try graceful Unity exit first
+              if (window.unityInstance) {
+                try {
+                  window.unityInstance.SendMessage("BrowserGameGuard", "ForceExit");
+                } catch (err) {
+                  console.log("[GameGuard] SendMessage failed, using Quit()");
+                  try {
+                    window.unityInstance.Quit();
+                  } catch (quitErr) {}
+                }
+              }
+              
+              // Redirect to home after short delay
+              setTimeout(function() {
+                window.location.href = "/";
+              }, 500);
+            }
+          } catch (parseErr) {
+            console.error("[GameGuard] Parse error:", parseErr);
+          }
+        });
+        
+        // Cleanup lock on tab close
+        window.addEventListener("beforeunload", function() {
+          const current = localStorage.getItem(LOCK_KEY);
+          if (!current) return;
+          try {
+            const data = JSON.parse(current);
+            if (data.instanceId === instanceId) {
+              localStorage.removeItem(LOCK_KEY);
+              console.log("[GameGuard] Cleaned up lock on exit");
+            }
+          } catch (e) {}
+        });
+        
+        console.log("[GameGuard] Registered game:", game, "instance:", instanceId);
+      })();
+      
+      const script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          spinner.style.display = "none";
+          progressBarEmpty.style.display = "";
+          progressBarFull.style.width = `${100 * progress}%`;
+        }).then((instance) => {
+          unityInstance = instance;  // Store the unity instance
+          unityInstanceReady = true;
+          
+          // Hide the default Unity loading cover
+          loadingCover.style.display = "none";
+          
+          // NOTE: Do NOT hide global-loader here!
+          // Global loader stays visible until Unity C# calls hideGlobalLoader()
+          // This ensures only ONE loading screen for deep-link flow
+          
+          if (canFullscreen) {
+            if (!hideFullScreenButton) {
+              fullscreenButton.style.display = "";
+            }
+            fullscreenButton.onclick = () => {
+              unityInstance.SetFullscreen(1);
+            };
+          }
+        }).catch((message) => {
+          alert(message);
+        });
+      };
+      document.body.appendChild(script);
+
+      // Gallery functionality for image selection
+      function openGalleryWebGL(target) {
+        console.log("openGalleryWebGL function called");
+        window.currentTarget = target; // Save the target name for Unity
+        document.getElementById('imageInput').click(); // Trigger the hidden file input
+      }
+      function exitFullScreen() {
+        console.log("Trying to exit fullscreen...");
+
+const isFullScreen =
+    document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.mozFullScreenElement ||
+    document.msFullscreenElement;
+
+if (!isFullScreen) {
+    console.log("Not in fullscreen — skipping exit and keyboard logic.");
+    return; // Don't do anything if not in fullscreen
+}
+
+console.log("Exiting fullscreen and showing keyboard...");
+
+// Exit fullscreen
+if (document.exitFullscreen) {
+    document.exitFullscreen();
+} else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+} else if (document.mozCancelFullScreen) {
+    document.mozCancelFullScreen();
+} else if (document.msExitFullscreen) {
+    document.msExitFullscreen();
+}
+    }
+
+    function reEnterFullScreen() {
+        setTimeout(() => {
+            if (unityInstance) {
+                unityInstance.SetFullscreen(1); // Re-enable fullscreen after a small delay
+            }
+        }, 500);
+    }
+      async function onImageSelected(event) {
+        if (!unityInstanceReady) {
+          console.error("Unity is not ready yet.");
+          return;
+        }
+
+        const file = event.target.files[0];
+        if (!file) {
+            console.error("No file selected.");
+            return;
+        }
+
+        // Read the file as a Base64 string
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const base64String = e.target.result.split(',')[1]; // Extract Base64 part
+            const target = window.currentTarget;
+
+            console.log("Image selected:", target, base64String); // Log selected image data
+
+            // Send the Base64 string to Unity via the unityInstance
+            if (unityInstance && unityInstance.SendMessage) {
+                console.log("Sending message to Unity...");
+                console.log("Data being sent to Unity:", target + '|' + base64String);
+                unityInstance.SendMessage('ImageManager', 'OnImageSelected', target + '|' + base64String);
+            } else {
+                console.error("Unity instance is not ready.");
+            }
+        };
+        reader.readAsDataURL(file);
+      }
+    </script>
+  </body>
+</html>

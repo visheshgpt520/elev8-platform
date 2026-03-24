@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import SuperAdminDashboard from './components/SuperAdminDashboard';
 import GameLobby from './components/GameLobby';
 import MotionArena from './components/MotionArena';
+import PokerGame from './components/PokerGame';
 import { useStore } from './store';
 import AdminLogin from './components/AdminLogin';
 import Sidebar from './components/Sidebar';
@@ -57,6 +58,7 @@ const App = () => {
                 {/* Full Screen Unwrapped Routes */}
                 <Route path="/admin-login" element={<AdminLogin />} />
                 <Route path="/arena" element={<MotionArena />} />
+                <Route path="/poker" element={<PokerGame />} />
                 <Route
                     path="/admin"
                     element={

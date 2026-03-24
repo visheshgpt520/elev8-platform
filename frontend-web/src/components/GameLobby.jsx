@@ -5,9 +5,9 @@ import { socket } from '../services/socket';
 import { EconomyService } from '../services/api';
 import LiveBetsTable from './LiveBetsTable';
 
-const GameGridCard = ({ title, category, players, entryFee, hot, onSelect, image }) => (
+const GameGridCard = ({ title, category, players, entryFee, hot, onSelect, customAction, image }) => (
     <div
-        onClick={onSelect}
+        onClick={customAction ? customAction : onSelect}
         className="group relative flex flex-col cursor-pointer transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-[0_10px_40px_-10px_rgba(147,51,234,0.5)] active:scale-95 hover:z-10 rounded-xl"
     >
         {/* Borderless Web3 Thumbnail Box */}
@@ -65,7 +65,7 @@ const GameLobby = () => {
     ];
 
     const slotsLive = [
-        { id: 9, title: "Texas Hold'em", category: 'Poker', players: '4,100', entryFee: '50 CR', hot: false, image: '/games/texas-holdem.png' },
+        { id: 9, title: "Texas Hold'em PRO", category: 'Unity WebGL', players: '4,100', entryFee: 'Load Game', hot: true, image: '/games/texas-holdem.png', customAction: () => navigate('/poker') },
         { id: 10, title: 'Baccarat Royal', category: 'Card Game', players: '2,802', entryFee: '100 CR', hot: false, image: '/games/baccarat-royal.png' },
         { id: 11, title: 'Hi-Lo Cards', category: 'Quick Play', players: '5,320', entryFee: '5 CR', hot: true, image: '/games/hi-lo-cards.png' },
         { id: 12, title: 'Dice Duel', category: 'Dice', players: '1,990', entryFee: '10 CR', hot: false, image: '/games/dice-duel.png' },
@@ -301,6 +301,7 @@ const GameLobby = () => {
                                 entryFee={game.entryFee}
                                 hot={game.hot}
                                 image={game.image}
+                                customAction={game.customAction}
                                 onSelect={handleFindMatch}
                             />
                         ))}

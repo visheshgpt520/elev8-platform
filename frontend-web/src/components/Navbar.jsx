@@ -19,9 +19,9 @@ const Navbar = ({ onMenuOpen }) => {
         const fetchBalance = async () => {
             try {
                 const data = await EconomyService.getBalance(currentUser.walletId);
-                setBalance(data.available_balance);
+                setBalance(data.available_balance || data || 0); // Handle the fallback data format
             } catch (error) {
-                console.error("Could not fetch balance", error);
+                // Ignore API offline errors silently
             }
         };
         fetchBalance();
