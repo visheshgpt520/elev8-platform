@@ -39,7 +39,7 @@ const PokerGame = () => {
                 </div>
                 
                 <iframe 
-                    src="/Poker-game/unity.html"
+                    src="/Poker-game/index.html"
                     className="w-full h-full border-none relative z-10"
                     title="Elev8 Poker"
                     allow="autoplay; fullscreen"
