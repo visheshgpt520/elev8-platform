@@ -1,3 +1,4 @@
+# Force rebuild: 2026-03-25T15:40:00Z
 FROM php:8.2-apache
 
 # Install system dependencies + PHP extensions

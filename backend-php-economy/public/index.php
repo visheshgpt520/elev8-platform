@@ -1,7 +1,5 @@
 <?php
 
-die("DIAGNOSTIC: INDEX.PHP IS RUNNING. ENVIRONMENT: " . (defined('ENVIRONMENT') ? ENVIRONMENT : 'NOT DEFINED'));
-
 /*
  * CodeIgniter 4 - public/index.php
  * This is the front controller and bootstrap entry point.
