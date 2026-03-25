@@ -5,6 +5,7 @@ services:
     env: docker
     plan: free
     region: ohio # Default US region
+    dockerContext: ./backend-php-economy
     dockerfilePath: ./backend-php-economy/Dockerfile
     envVars:
       - key: CI_ENVIRONMENT
