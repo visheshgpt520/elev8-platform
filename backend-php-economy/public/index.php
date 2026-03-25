@@ -25,7 +25,7 @@ defined('ROOTPATH')   || define('ROOTPATH', realpath(FCPATH . '..') . DIRECTORY_
 defined('APPPATH')    || define('APPPATH', ROOTPATH . 'app' . DIRECTORY_SEPARATOR);
 defined('SYSTEMPATH') || define('SYSTEMPATH', ROOTPATH . 'vendor/codeigniter4/framework/system' . DIRECTORY_SEPARATOR);
 defined('WRITEPATH')  || define('WRITEPATH', ROOTPATH . 'writable' . DIRECTORY_SEPARATOR);
-defined('ENVIRONMENT') || define('ENVIRONMENT', 'development');
+defined('ENVIRONMENT') || define('ENVIRONMENT', 'production');
 
 // Load constants early
 if (is_file(APPPATH . 'Config/Constants.php')) {
