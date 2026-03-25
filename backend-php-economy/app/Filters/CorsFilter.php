@@ -19,7 +19,7 @@ class CorsFilter implements FilterInterface
 
         $response->setHeader('Access-Control-Allow-Origin', '*');
         $response->setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-        $response->setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+        $response->setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, token');
 
         // Immediately respond to pre-flight OPTIONS requests
         if ($request->getMethod() === 'options') {
@@ -31,6 +31,6 @@ class CorsFilter implements FilterInterface
     {
         $response->setHeader('Access-Control-Allow-Origin', '*');
         $response->setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-        $response->setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+        $response->setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, token');
     }
 }

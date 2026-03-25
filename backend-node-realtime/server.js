@@ -8,7 +8,11 @@ const Matchmaker = require('./matchmaker');
 const ApiClient = require('./apiClient');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'token']
+}));
 
 const server = http.createServer(app);
 const io = new Server(server, {
