@@ -22,24 +22,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 // Paths
 define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR);
 
-// Main Constants
-defined('ROOTPATH') || define('ROOTPATH', realpath(FCPATH . '..') . DIRECTORY_SEPARATOR);
-
-// SystemPath — CodeIgniter system directory (installed by Composer)
-$pathsConfig = FCPATH . '../app/Config/Paths.php';
-require $pathsConfig;
-
-$paths = new Config\Paths();
-
-// Index Check
-if (! is_file($paths->systemDirectory . '/bootstrap.php')) {
-    if (PHP_SAPI == 'cli' || STDIN) {
-        $paths->systemDirectory = '../vendor/codeigniter4/framework/system';
-    }
+// Ensure the current directory is pointing to the front controller's directory
+if (getcwd() !== FCPATH) {
+    chdir(FCPATH);
 }
 
-// Load CodeIgniter bootstrap
-$app = require $paths->systemDirectory . '/bootstrap.php';
+// Load our paths config file
+require FCPATH . '../app/Config/Paths.php';
+$paths = new Config\Paths();
 
-// Boot the application
+// --------------------------------------------------------------------
+// BOOT THE APPLICATION
+// --------------------------------------------------------------------
+$app = \CodeIgniter\Boot::bootWeb($paths);
 $app->run();
