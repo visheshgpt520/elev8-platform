@@ -31,6 +31,8 @@ if (getcwd() !== FCPATH) {
 defined('ROOTPATH') || define('ROOTPATH', realpath(FCPATH . '..') . DIRECTORY_SEPARATOR);
 
 // Define ENVIRONMENT
+$_SERVER['CI_ENVIRONMENT'] = 'production';
+$_ENV['CI_ENVIRONMENT'] = 'production';
 defined('ENVIRONMENT') || define('ENVIRONMENT', 'production');
 
 // Load our paths config file

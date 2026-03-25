@@ -74,6 +74,21 @@ class User extends ResourceController
     }
 
     /**
+     * POST /api/User/guest_register
+     */
+    public function guest_register()
+    {
+        return $this->respond([
+            'status'  => 'success',
+            'message' => 'Guest registered successfully (Debug Mode)',
+            'data'    => [
+                'id' => 99999,
+                'username' => 'debug_guest'
+            ]
+        ]);
+    }
+
+    /**
      * OPTIONS fix for CORS if required at controller level
      */
     public function options()

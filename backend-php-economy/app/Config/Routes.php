@@ -34,10 +34,17 @@ $routes->group('api/v1', function ($routes) {
     });
 });
 
-// Player and Front-facing API
+// Player and Front-facing API (Unity often uses lowercase)
+$routes->group('api/user', function ($routes) {
+    $routes->post('login', 'User::login');
+    $routes->post('send_otp', 'User::send_otp');
+    $routes->post('guest_register', 'User::guest_register');
+    $routes->options('(:any)', 'User::options');
+});
+
 $routes->group('api/User', function ($routes) {
     $routes->post('login', 'User::login');
     $routes->post('send_otp', 'User::send_otp');
-    $routes->options('login', 'User::options');
-    $routes->options('send_otp', 'User::options');
+    $routes->post('guest_register', 'User::guest_register');
+    $routes->options('(:any)', 'User::options');
 });
