@@ -30,6 +30,9 @@ if (getcwd() !== FCPATH) {
 // Define ROOTPATH before instantiating Paths
 defined('ROOTPATH') || define('ROOTPATH', realpath(FCPATH . '..') . DIRECTORY_SEPARATOR);
 
+// Define ENVIRONMENT
+defined('ENVIRONMENT') || define('ENVIRONMENT', 'production');
+
 // Load our paths config file
 require FCPATH . '../app/Config/Paths.php';
 $paths = new Config\Paths();
