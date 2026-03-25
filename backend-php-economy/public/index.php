@@ -22,6 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 // Paths
 define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR);
 
+// Main Constants
+defined('ROOTPATH') || define('ROOTPATH', realpath(FCPATH . '..') . DIRECTORY_SEPARATOR);
+
 // SystemPath — CodeIgniter system directory (installed by Composer)
 $pathsConfig = FCPATH . '../app/Config/Paths.php';
 require $pathsConfig;
