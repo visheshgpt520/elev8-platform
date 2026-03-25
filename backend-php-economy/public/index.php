@@ -34,6 +34,11 @@ defined('ROOTPATH') || define('ROOTPATH', realpath(FCPATH . '..') . DIRECTORY_SE
 require FCPATH . '../app/Config/Paths.php';
 $paths = new Config\Paths();
 
+// CRITICAL: Manually load constants to resolve "EXIT_ERROR" undefined issues in some environments
+if (is_file(realpath($paths->appDirectory) . '/Config/Constants.php')) {
+    require_once realpath($paths->appDirectory) . '/Config/Constants.php';
+}
+
 // --------------------------------------------------------------------
 // BOOT THE APPLICATION
 // --------------------------------------------------------------------
