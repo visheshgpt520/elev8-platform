@@ -2,9 +2,9 @@
 
 namespace Config;
 
-use CodeIgniter\Config\BaseConfig;
+use CodeIgniter\Modules\Modules as BaseModules;
 
-class Modules extends BaseConfig
+class Modules extends BaseModules
 {
     public $enabled = true;
     public $discoverInVendors = true;
