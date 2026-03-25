@@ -21,32 +21,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 // Paths
 define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR);
-
-// Ensure the current directory is pointing to the front controller's directory
-if (getcwd() !== FCPATH) {
-    chdir(FCPATH);
-}
-
-// Define ROOTPATH before instantiating Paths
-defined('ROOTPATH') || define('ROOTPATH', realpath(FCPATH . '..') . DIRECTORY_SEPARATOR);
-
-// Define ENVIRONMENT
-$_SERVER['CI_ENVIRONMENT'] = 'production';
-$_ENV['CI_ENVIRONMENT'] = 'production';
+defined('ROOTPATH')   || define('ROOTPATH', realpath(FCPATH . '..') . DIRECTORY_SEPARATOR);
+defined('APPPATH')    || define('APPPATH', ROOTPATH . 'app' . DIRECTORY_SEPARATOR);
+defined('SYSTEMPATH') || define('SYSTEMPATH', ROOTPATH . 'vendor/codeigniter4/framework/system' . DIRECTORY_SEPARATOR);
+defined('WRITEPATH')  || define('WRITEPATH', ROOTPATH . 'writable' . DIRECTORY_SEPARATOR);
 defined('ENVIRONMENT') || define('ENVIRONMENT', 'production');
 
-// Load our paths config file
-require FCPATH . '../app/Config/Paths.php';
-$paths = new Config\Paths();
-
-// CRITICAL: Manually load constants to resolve "EXIT_ERROR" undefined issues in some environments
-if (is_file(realpath($paths->appDirectory) . '/Config/Constants.php')) {
-    require_once realpath($paths->appDirectory) . '/Config/Constants.php';
+// Load constants early
+if (is_file(APPPATH . 'Config/Constants.php')) {
+    require_once APPPATH . 'Config/Constants.php';
 }
+
+// Load our paths config file
+require APPPATH . 'Config/Paths.php';
+$paths = new Config\Paths();
 
 // --------------------------------------------------------------------
 // BOOT THE APPLICATION
 // --------------------------------------------------------------------
-require_once $paths->systemDirectory . '/Boot.php';
+require_once SYSTEMPATH . 'Boot.php';
 $app = \CodeIgniter\Boot::bootWeb($paths);
 $app->run();
