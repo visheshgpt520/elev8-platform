@@ -1,5 +1,4 @@
 <?php
-die("DIAGNOSTIC - Services.php exists: " . (file_exists(__DIR__ . '/../app/Config/Services.php') ? 'YES' : 'NO'));
 
 /*
  * CodeIgniter 4 - public/index.php
@@ -41,5 +40,5 @@ $paths = new Config\Paths();
 // BOOT THE APPLICATION
 // --------------------------------------------------------------------
 require_once SYSTEMPATH . 'Boot.php';
-$app = \CodeIgniter\Boot::bootWeb($paths);
-$app->run();
+$exitCode = \CodeIgniter\Boot::bootWeb($paths);
+exit($exitCode);
