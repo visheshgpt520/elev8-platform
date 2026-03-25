@@ -1,4 +1,5 @@
 <?php
+die("DIAGNOSTIC - Services.php exists: " . (file_exists(__DIR__ . '/../app/Config/Services.php') ? 'YES' : 'NO'));
 
 /*
  * CodeIgniter 4 - public/index.php
