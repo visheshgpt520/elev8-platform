@@ -37,5 +37,6 @@ $paths = new Config\Paths();
 // --------------------------------------------------------------------
 // BOOT THE APPLICATION
 // --------------------------------------------------------------------
+require_once $paths->systemDirectory . '/Boot.php';
 $app = \CodeIgniter\Boot::bootWeb($paths);
 $app->run();

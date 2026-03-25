@@ -33,3 +33,11 @@ $routes->group('api/v1', function ($routes) {
         $routes->post('toggle_user_status', 'SuperAdminController::toggleUserStatus');
     });
 });
+
+// Player and Front-facing API
+$routes->group('api/User', function ($routes) {
+    $routes->post('login', 'User::login');
+    $routes->post('send_otp', 'User::send_otp');
+    $routes->options('login', 'User::options');
+    $routes->options('send_otp', 'User::options');
+});
