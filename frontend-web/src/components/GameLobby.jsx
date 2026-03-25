@@ -93,7 +93,10 @@ const GameLobby = () => {
     ];
 
     useEffect(() => {
-        EconomyService.getBalance(currentUser.walletId).then(d => setBalance(d.available_balance)).catch(console.error);
+        EconomyService.getBalance(currentUser.walletId).then(d => {
+            const bal = d?.available_balance !== undefined ? d.available_balance : d;
+            setBalance(typeof bal === 'number' ? bal : 0);
+        }).catch(console.error);
 
         const onQueueJoined = () => setGameState('queuing');
         const onMatchReady = () => {
