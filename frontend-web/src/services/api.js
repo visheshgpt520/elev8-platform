@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // The PHP API Endpoints handled by Render
-const PHP_URL = 'https://elev8-php-economy.onrender.com/api/v1';
+const PHP_URL = import.meta.env.VITE_API_BASE_URL || 'https://elev8-php-economy-1f5f.onrender.com/api/v1';
 
 export const api = axios.create({
     baseURL: PHP_URL,

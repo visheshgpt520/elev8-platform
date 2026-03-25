@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
 
 // Target to live backend-node-realtime server on Render
-const SOCKET_URL = 'https://elev8-node-realtime.onrender.com';
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'https://elev8-node-realtime-1f5f.onrender.com';
 
 export const socket = io(SOCKET_URL, {
     autoConnect: true,
