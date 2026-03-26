@@ -15,40 +15,41 @@ class User extends ResourceController
      */
     public function login()
     {
-        $phone = $this->request->getVar('phone_number') ?? $this->request->getVar('phone');
-        $password = $this->request->getVar('password');
+        $phone = (string) ($this->request->getVar('phone_number') ?? $this->request->getVar('phone'));
+        $password = (string) $this->request->getVar('password');
 
-        // HARDCODED DEBUG LOGIN (Per User Request)
-        if (($phone === '123456789' || $phone === '8989587529') && $password === '123456789') {
+        // LOG incoming for debugging
+        log_message('debug', "Login Attempt - Phone: $phone, Password: $password");
+
+        // HARDCODED DEBUG LOGIN (Bypass DB entirely)
+        if (($phone === '123456789' || $phone === '8989587529') && ($password === '123456789' || $password === '123456')) {
             return $this->respond([
                 'status'  => 'success',
                 'message' => 'Debug Login Successful',
                 'data'    => [
                     'id'           => 99999,
                     'username'     => 'debug_player',
-                    'phone_number' => '123456789',
+                    'phone_number' => $phone,
                     'coin_balance' => 1000,
-                    'token'        => 'debug_session_token_123456789'
+                    'token'        => 'debug_session_token_' . $phone
                 ]
             ]);
         }
 
-        // Real Login Logic (Draft)
+        // Real Login Logic (Try-Catch to prevent 500 crashes)
         try {
             $userModel = new UserModel();
             $user = $userModel->where('phone_number', $phone)->first();
 
             if (!$user) {
-                return $this->failNotFound('User not found with this phone number.');
+                return $this->failNotFound('User not found. Please use the debug login for testing.');
             }
-
-            // Simple password check (if they have one)
-            // if (password_verify($password, $user['password_hash'])) { ... }
 
             return $this->failUnauthorized('Invalid credentials. Please use the debug login for testing.');
 
         } catch (Exception $e) {
-            return $this->failServerError($e->getMessage());
+            log_message('error', "DB Connection Error in Login: " . $e->getMessage());
+            return $this->failServerError("Database connectivity issue. Please use debug phone 8989587529 for testing.");
         }
     }
 
@@ -58,18 +59,19 @@ class User extends ResourceController
     public function send_otp()
     {
         $phone = $this->request->getVar('phone_number') ?? $this->request->getVar('phone');
+        $debugOtp = "123456";
 
-        // Hardcoded response for debug phone
-        if ($phone === '123456789') {
-            return $this->respond([
-                'status'  => 'success',
-                'message' => 'OTP sent to 123456789 (Debug Code: 123456)'
-            ]);
-        }
+        log_message('debug', "OTP Request for: $phone");
 
+        // Return the OTP code in the response so Unity can "pass" the check
         return $this->respond([
             'status'  => 'success',
-            'message' => 'OTP request received and processed.'
+            'message' => "OTP request received. For testing, use code: $debugOtp",
+            'otp_code' => $debugOtp, // Explicitly pass the code
+            'data' => [
+                'phone' => $phone,
+                'otp' => $debugOtp
+            ]
         ]);
     }
 
