@@ -48,3 +48,14 @@ $routes->group('api/User', function ($routes) {
     $routes->post('guest_register', 'User::guest_register');
     $routes->options('(:any)', 'User::options');
 });
+
+// Fallback for Unity legacy calls without /api/v1 prefix
+$routes->group('economy', function ($routes) {
+    $routes->post('mint', 'EconomyController::mint');
+    $routes->post('allocate', 'EconomyController::allocate');
+    $routes->post('transfer', 'EconomyController::transfer');
+    $routes->get('balance/(:num)', 'EconomyController::balance/$1');
+    $routes->get('network_status', 'EconomyController::networkStatus');
+    $routes->post('settle_match', 'EconomyController::settleMatch');
+    $routes->post('manual_fiat_settlement', 'EconomyController::manualFiatSettlement');
+});
