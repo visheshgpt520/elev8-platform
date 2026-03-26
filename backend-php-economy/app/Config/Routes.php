@@ -6,6 +6,7 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', 'Home::index');
+$routes->get('debug', 'Home::debug');
 
 $routes->group('api/v1', function ($routes) {
     // Multi-tier economy routing logic block

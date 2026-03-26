@@ -13,10 +13,10 @@ class Database extends Config
     // Default connection — values pulled from .env / Render environment variables
     public array $default = [
         'DSN'          => '',
-        'hostname'     => 'localhost',
-        'username'     => 'root',
-        'password'     => '',
-        'database'     => 'elev8_core',
+        'hostname'     => 'db-mysql-blr1-62386-do-user-18451369-0.j.db.ondigitalocean.com',
+        'username'     => 'doadmin',
+        'password'     => 'YOUR_DO_PASSWORD',
+        'database'     => 'elev8_economy',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
@@ -28,7 +28,7 @@ class Database extends Config
         'compress'     => false,
         'strictOn'     => false,
         'failover'     => [],
-        'port'         => 3306,
+        'port'         => 25060,
         'numberNative' => false,
     ];
 
