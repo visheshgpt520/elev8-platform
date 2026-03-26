@@ -19,7 +19,7 @@ class User extends ResourceController
         $password = $this->request->getVar('password');
 
         // HARDCODED DEBUG LOGIN (Per User Request)
-        if ($phone === '123456789' && $password === '123456789') {
+        if (($phone === '123456789' || $phone === '8989587529') && $password === '123456789') {
             return $this->respond([
                 'status'  => 'success',
                 'message' => 'Debug Login Successful',
