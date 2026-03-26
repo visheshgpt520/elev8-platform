@@ -17,13 +17,19 @@ class Home extends Controller
 
     public function debug(): string
     {
+        $hostname = config('Database')->default['hostname'];
         return json_encode([
             'environment' => [
                 'ENVIRONMENT' => ENVIRONMENT,
                 'CI_ENVIRONMENT' => getenv('CI_ENVIRONMENT'),
             ],
             'database_config' => [
-                'hostname' => config('Database')->default['hostname'],
+                'hostname' => $hostname,
+                'resolved_ip' => gethostbyname($hostname),
+            ],
+            'dns_check' => [
+                'hostname_to_check' => $hostname,
+                'is_resolvable' => (gethostbyname($hostname) !== $hostname),
             ],
         ]);
     }
