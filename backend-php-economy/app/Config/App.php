@@ -9,6 +9,9 @@ class App extends BaseConfig
     // Base URL — Render injects this via environment in production
     public string $baseURL = 'http://localhost:8080/';
 
+    // Allowed Hostnames in the site URI
+    public array $allowedHostnames = [];
+
     // Index page (empty for clean URLs via Apache mod_rewrite)
     public string $indexPage = '';
 
