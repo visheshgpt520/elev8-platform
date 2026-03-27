@@ -4,5 +4,16 @@
       "source": "/((?!Poker-game).*)",
       "destination": "/index.html"
     }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self' https://project-hgke0.vercel.app; script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval' 'unsafe-inline' https://project-hgke0.vercel.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://project-hgke0.vercel.app; connect-src 'self' https://project-hgke0.vercel.app wss://*.render.com;"
+        }
+      ]
+    }
   ]
 }
