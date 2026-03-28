@@ -10,13 +10,13 @@ class Database extends Config
 
     public string $defaultGroup = 'default';
 
-    // Default connection — values pulled from .env / Render environment variables
+    // Default connection — values pulled from Render environment variables
     public array $default = [
         'DSN'          => '',
-        'hostname'     => getenv('database.default.hostname') ?: '34.180.29.69',
-        'username'     => getenv('database.default.username') ?: 'avnadmin',
-        'password'     => getenv('database.default.password') ?: '',
-        'database'     => getenv('database.default.database') ?: 'defaultdb',
+        'hostname'     => getenv('DB_HOSTNAME') ?: '34.180.29.69',
+        'username'     => getenv('DB_USERNAME') ?: 'avnadmin',
+        'password'     => getenv('DB_PASSWORD') ?: '',
+        'database'     => getenv('DB_DATABASE') ?: 'defaultdb',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
@@ -28,7 +28,7 @@ class Database extends Config
         'compress'     => false,
         'strictOn'     => false,
         'failover'     => [],
-        'port'         => getenv('database.default.port') ?: 15772,
+        'port'         => getenv('DB_PORT') ?: 15772,
         'numberNative' => false,
     ];
 
