@@ -10,17 +10,17 @@ class Database extends Config
 
     public string $defaultGroup = 'default';
 
-    // Default connection — values pulled from Render environment variables
+    // Default connection — structure defined here, values populated in constructor
     public array $default = [
         'DSN'          => '',
-        'hostname'     => getenv('DB_HOSTNAME') ?: '34.180.29.69',
-        'username'     => getenv('DB_USERNAME') ?: 'avnadmin',
-        'password'     => getenv('DB_PASSWORD') ?: '',
-        'database'     => getenv('DB_DATABASE') ?: 'defaultdb',
+        'hostname'     => '127.0.0.1', // Placeholder
+        'username'     => 'root',      // Placeholder
+        'password'     => '',          // Placeholder
+        'database'     => 'elev8',     // Placeholder
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
-        'DBDebug'      => true, // Temporarily true for debugging 500 error
+        'DBDebug'      => true,
         'charset'      => 'utf8mb4',
         'DBCollat'     => 'utf8mb4_general_ci',
         'swapPre'      => '',
@@ -28,9 +28,22 @@ class Database extends Config
         'compress'     => false,
         'strictOn'     => false,
         'failover'     => [],
-        'port'         => getenv('DB_PORT') ?: 15772,
+        'port'         => 3306,        // Placeholder
         'numberNative' => false,
     ];
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Populate dynamic values from environment variables
+        $this->default['hostname'] = getenv('DB_HOSTNAME') ?: '34.180.29.69';
+        $this->default['username'] = getenv('DB_USERNAME') ?: 'avnadmin';
+        $this->default['password'] = getenv('DB_PASSWORD') ?: '';
+        $this->default['database'] = getenv('DB_DATABASE') ?: 'defaultdb';
+        $this->default['port']     = getenv('DB_PORT')     ?: 15772;
+        $this->default['DBDebug']  = (ENVIRONMENT !== 'production');
+    }
 
     public array $tests = [
         'DSN'          => '',
