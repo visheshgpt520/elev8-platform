@@ -39,13 +39,28 @@ class User extends ResourceController
         // Real Login Logic (Try-Catch to prevent 500 crashes)
         try {
             $userModel = new UserModel();
-            $user = $userModel->where('phone_number', $phone)->first();
+            $user = $userModel->where('mobile', $phone)->first();
 
             if (!$user) {
                 return $this->failNotFound('User not found. Please use the debug login for testing.');
             }
 
-            return $this->failUnauthorized('Invalid credentials. Please use the debug login for testing.');
+            // Simple plain-text password check (Update if using hashing like password_verify)
+            if ($user['password'] !== $password) {
+                return $this->failUnauthorized('Invalid credentials.');
+            }
+
+            return $this->respond([
+                'status'  => 'success',
+                'message' => 'Login Successful',
+                'data'    => [
+                    'id'           => $user['id'],
+                    'username'     => $user['name'] ?? 'Player',
+                    'phone_number' => $user['mobile'],
+                    'coin_balance' => $user['wallet'] ?? 0,
+                    'token'        => 'session_token_' . $user['id']
+                ]
+            ]);
 
         } catch (Exception $e) {
             log_message('error', "DB Connection Error in Login: " . $e->getMessage());
