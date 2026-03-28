@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class WalletModel extends Model
 {
-    protected $table = 'wallets';
+    protected $table = 'tbl_users';
     protected $primaryKey = 'id';
     protected $useAutoIncrement = true;
     protected $returnType = 'array';
@@ -14,20 +14,16 @@ class WalletModel extends Model
     protected $protectFields = true;
 
     protected $allowedFields = [
-        'user_id',
-        'balance',
-        'locked_balance',
-        'currency'
+        'wallet',
+        'unutilized_wallet',
+        'winning_wallet',
+        'bonus_wallet'
     ];
 
-    protected $useTimestamps = true;
-    protected $createdField = 'created_at';
-    protected $updatedField = 'updated_at';
+    protected $useTimestamps = false; // We don't have created_at/updated_at in tbl_users by default
 
+    // Validation rules are not used strictly here, but updating to match
     protected $validationRules = [
-        'user_id' => 'required|integer',
-        'balance' => 'required|numeric',
-        'locked_balance' => 'numeric',
-        'currency' => 'required|alpha|max_length[10]'
+        'wallet' => 'numeric'
     ];
 }

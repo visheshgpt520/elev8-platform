@@ -1,0 +1,119 @@
+﻿
+> CREATE TABLE `tbl_users` (
+    `id` int NOT NULL,
+    `custom_id` int NOT NULL,
+    `name` varchar(255) NOT NULL,
+    `user_type` tinyint NOT NULL COMMENT '0=real,1=bot',
+    `bank_detail` varchar(50) NOT NULL,
+    `adhar_card` varchar(50) NOT NULL,
+    `upi` varchar(50) NOT NULL,
+    `password` varchar(255) NOT NULL,
+    `sw_password` varchar(255) NOT NULL,
+    `mobile` varchar(10) NOT NULL COMMENT 'user without mobile is BOT',
+    `app` varchar(100) NOT NULL,
+    `email` varchar(50) NOT NULL,
+    `source` tinyint NOT NULL COMMENT '0=mobile,1=google,2=facebook',
+    `gender` char(1) NOT NULL,
+    `profile_pic` varchar(255) NOT NULL,
+    `referral_code` varchar(255) NOT NULL,
+    `referred_by` int NOT NULL,
+    `referral_precent` float(5,2) NOT NULL,
+    `created_by` int NOT NULL,
+    `wallet` double(15,2) NOT NULL,
+    `unutilized_wallet` double(15,2) NOT NULL,
+    `winning_wallet` double(15,2) NOT NULL,
+    `bonus_wallet` double(15,2) NOT NULL,
+    `todays_bet` float NOT NULL,
+    `todays_recharge` float NOT NULL,
+    `spin_remaining` int NOT NULL,
+    `fcm` varchar(500) NOT NULL,
+    `socket_id` varchar(100) NOT NULL,
+    `table_id` int NOT NULL,
+    `poker_table_id` int NOT NULL,
+    `head_tail_room_id` int NOT NULL,
+    `rummy_table_id` int NOT NULL,
+    `rummy_cacheta_table_id` int NOT NULL,
+    `ander_bahar_room_id` int NOT NULL,
+    `slot_game_room_id` int NOT NULL,
+    `dragon_tiger_room_id` int NOT NULL,
+    `jackpot_room_id` int NOT NULL,
+    `seven_up_room_id` int NOT NULL,
+    `rummy_pool_table_id` int NOT NULL,
+    `rummy_deal_table_id` int NOT NULL,
+> CREATE TABLE `tbl_users_bank_details` (
+    `id` int NOT NULL,
+    `user_id` int NOT NULL,
+    `bank_name` varchar(100) NOT NULL,
+    `ifsc_code` varchar(20) NOT NULL,
+    `acc_holder_name` varchar(100) NOT NULL,
+    `acc_no` varchar(100) NOT NULL,
+    `passbook_img` varchar(100) NOT NULL,
+    `upi_id` varchar(255) NOT NULL,
+    `crypto_address` varchar(300) NOT NULL,
+    `crypto_wallet_type` varchar(255) NOT NULL,
+    `crypto_qr` varchar(255) NOT NULL,
+    `added_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_date` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `isDeleted` tinyint NOT NULL COMMENT '1=deleted'
+  ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  
+  --
+  -- Dumping data for table `tbl_users_bank_details`
+  --
+  
+  INSERT INTO `tbl_users_bank_details` (`id`, `user_id`, `bank_name`, `ifsc_code`, `acc_holder_name`, `acc_no`, 
+`passbook_img`, `upi_id`, `crypto_address`, `crypto_wallet_type`, `crypto_qr`, `added_date`, `updated_date`, 
+`isDeleted`) VALUES
+  (1, 12, 'Boi', 'FFGYY1234S', 'Try', '435464576767', '68ff07be92efa.jpg', '', '', '', '', '2025-10-27 11:18:46', 
+'0000-00-00 00:00:00', 0);
+  
+  -- --------------------------------------------------------
+  
+  --
+  -- Table structure for table `tbl_users_kyc`
+  --
+  
+> CREATE TABLE `tbl_users_kyc` (
+    `id` int NOT NULL,
+    `user_id` int NOT NULL,
+    `pan_no` varchar(10) NOT NULL,
+    `pan_img` varchar(100) NOT NULL,
+    `aadhar_no` varchar(12) NOT NULL,
+    `aadhar_img` varchar(100) NOT NULL,
+    `status` tinyint(1) NOT NULL COMMENT '0=pending,1=approved,2=rejected',
+    `reason` varchar(255) NOT NULL,
+    `added_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_date` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `isDeleted` tinyint NOT NULL COMMENT '1=deleted'
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  
+  -- --------------------------------------------------------
+  
+  --
+  -- Table structure for table `tbl_user_category`
+  --
+  
+  CREATE TABLE `tbl_user_category` (
+    `id` int NOT NULL,
+    `name` varchar(255) NOT NULL,
+    `amount` int NOT NULL,
+    `percentage` int NOT NULL,
+    `added_date` datetime NOT NULL,
+    `updated_date` datetime NOT NULL,
+    `isDeleted` tinyint NOT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  
+  --
+  -- Dumping data for table `tbl_user_category`
+  --
+  
+  INSERT INTO `tbl_user_category` (`id`, `name`, `amount`, `percentage`, `added_date`, `updated_date`, `isDeleted`) 
+VALUES
+  (1, 'Silver', 1000, 1, '2022-10-25 17:24:39', '2022-10-25 17:33:10', 0),
+  (2, 'Gold', 5000, 3, '2022-10-25 17:54:23', '2022-11-15 15:19:12', 0),
+  (3, 'Silver', 2000, 5, '2022-10-27 13:46:31', '2022-11-15 15:19:12', 1),
+  (4, 'Platinum', 10000, 5, '2022-11-01 11:39:30', '2023-12-14 07:31:32', 1),
+  (5, 'Platinum', 30000, 10, '2023-12-14 07:31:23', '2023-12-14 07:32:35', 0),
+  (6, 'Diamond ', 50000, 10, '2023-12-14 07:32:24', '0000-00-00 00:00:00', 0),
+
+

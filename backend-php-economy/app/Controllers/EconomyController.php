@@ -202,18 +202,18 @@ class EconomyController extends ResourceController
                 return $this->failNotFound("Wallet $walletId not found. Please use debug wallet 1.");
             }
 
-            $balance = $wallet['balance'];
-            $lockedBalance = $wallet['locked_balance'] ?? 0;
-            $availableBalance = $balance - $lockedBalance;
+            $balance = $wallet['wallet'] ?? 0;
+            $lockedBalance = $wallet['unutilized_wallet'] ?? 0;
+            $availableBalance = $balance; // Assuming 'wallet' is the available balance, or total balance. 
 
             return $this->respond([
                 'status' => 'success',
                 'data' => [
                     'wallet_id' => $walletId,
-                    'total_balance' => $balance,
+                    'total_balance' => $balance + $lockedBalance,
                     'locked_balance' => $lockedBalance,
                     'available_balance' => $availableBalance,
-                    'currency' => $wallet['currency']
+                    'currency' => 'COIN'
                 ]
             ]);
         } catch (Exception $e) {
