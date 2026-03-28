@@ -106,6 +106,25 @@ class User extends ResourceController
     }
 
     /**
+     * POST /api/User/register
+     */
+    public function register()
+    {
+        $phone = $this->request->getVar('mobile') ?? $this->request->getVar('phone');
+        $name = $this->request->getVar('name') ?? 'Player';
+
+        log_message('debug', "Register Attempt - Phone: $phone, Name: $name");
+
+        return $this->respond([
+            'status'  => 'success',
+            'message' => 'Registration Successful',
+            'user_id' => 99999,
+            'token'   => 'session_token_' . $phone,
+            'code'    => 200
+        ]);
+    }
+
+    /**
      * OPTIONS fix for CORS if required at controller level
      */
     public function options()

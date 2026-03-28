@@ -40,6 +40,7 @@ $routes->group('api/user', function ($routes) {
     $routes->post('login', 'User::login');
     $routes->post('send_otp', 'User::send_otp');
     $routes->post('guest_register', 'User::guest_register');
+    $routes->post('register', 'User::register');
     $routes->options('(:any)', 'User::options');
 });
 
@@ -47,6 +48,7 @@ $routes->group('api/User', function ($routes) {
     $routes->post('login', 'User::login');
     $routes->post('send_otp', 'User::send_otp');
     $routes->post('guest_register', 'User::guest_register');
+    $routes->post('register', 'User::register');
     $routes->options('(:any)', 'User::options');
 });
 
