@@ -24,15 +24,24 @@ class User extends ResourceController
         // HARDCODED DEBUG LOGIN (Bypass DB entirely)
         if (($phone === '123456789' || $phone === '8989587529') && ($password === '123456789' || $password === '123456')) {
             return $this->respond([
-                'status'  => 'success',
-                'message' => 'Debug Login Successful',
-                'data'    => [
-                    'id'           => 99999,
-                    'username'     => 'debug_player',
-                    'phone_number' => $phone,
-                    'coin_balance' => 1000,
-                    'token'        => 'debug_session_token_' . $phone
-                ]
+                'message' => 'Login Successful',
+                'code' => 200,
+                'user_data' => [[
+                    'id'           => '99999',
+                    'name'         => 'debug_player',
+                    'mobile'       => $phone,
+                    'email'        => '',
+                    'profile_pic'  => '',
+                    'wallet'       => '1000',
+                    'winning_wallet' => '0',
+                    'bonus_wallet' => '0',
+                    'unutilized_wallet' => '0',
+                    'token'        => 'debug_session_token_' . $phone,
+                    'referral_code' => 'ELEV8',
+                    'status'       => '1',
+                    'poker_table_id' => '0',
+                    'table_id'     => '0'
+                ]]
             ]);
         }
 
@@ -51,15 +60,24 @@ class User extends ResourceController
             }
 
             return $this->respond([
-                'status'  => 'success',
                 'message' => 'Login Successful',
-                'data'    => [
-                    'id'           => $user['id'],
-                    'username'     => $user['name'] ?? 'Player',
-                    'phone_number' => $user['mobile'],
-                    'coin_balance' => $user['wallet'] ?? 0,
-                    'token'        => 'session_token_' . $user['id']
-                ]
+                'code' => 200,
+                'user_data' => [[
+                    'id'           => (string)$user['id'],
+                    'name'         => $user['name'] ?? 'Player',
+                    'mobile'       => $user['mobile'],
+                    'email'        => $user['email'] ?? '',
+                    'profile_pic'  => $user['profile_pic'] ?? '',
+                    'wallet'       => (string)($user['wallet'] ?? 0),
+                    'winning_wallet' => (string)($user['winning_wallet'] ?? 0),
+                    'bonus_wallet' => (string)($user['bonus_wallet'] ?? 0),
+                    'unutilized_wallet' => (string)($user['unutilized_wallet'] ?? 0),
+                    'token'        => 'session_token_' . $user['id'],
+                    'referral_code' => $user['referral_code'] ?? '',
+                    'status'       => '1',
+                    'poker_table_id' => '0',
+                    'table_id'     => '0'
+                ]]
             ]);
 
         } catch (Exception $e) {
@@ -80,13 +98,9 @@ class User extends ResourceController
 
         // Return the OTP code in the response so Unity can "pass" the check
         return $this->respond([
-            'status'  => 'success',
             'message' => "OTP request received. For testing, use code: $debugOtp",
-            'otp_code' => $debugOtp, // Explicitly pass the code
-            'data' => [
-                'phone' => $phone,
-                'otp' => $debugOtp
-            ]
+            'otp_id' => $debugOtp, // Map to OTP ID field expected by Unity
+            'code' => 200
         ]);
     }
 
@@ -96,12 +110,10 @@ class User extends ResourceController
     public function guest_register()
     {
         return $this->respond([
-            'status'  => 'success',
             'message' => 'Guest registered successfully (Debug Mode)',
-            'data'    => [
-                'id' => 99999,
-                'username' => 'debug_guest'
-            ]
+            'user_id' => '99999',
+            'token'   => 'guest_token_' . uniqid(),
+            'code'    => 200
         ]);
     }
 
@@ -121,6 +133,50 @@ class User extends ResourceController
             'user_id' => 99999,
             'token'   => 'session_token_' . $phone,
             'code'    => 200
+        ]);
+    }
+
+    /**
+     * POST /api/User/profile
+     */
+    public function profile()
+    {
+        $phone = $this->request->getVar('mobile') ?? $this->request->getVar('phone') ?? '8989587529';
+        
+        return $this->respond([
+            'message' => 'Profile fetched successfully',
+            'code' => 200,
+            'user_data' => [[
+                'id'           => '99999',
+                'name'         => 'debug_player',
+                'mobile'       => $phone,
+                'email'        => '',
+                'profile_pic'  => '',
+                'wallet'       => '1000',
+                'winning_wallet' => '0',
+                'bonus_wallet' => '0',
+                'unutilized_wallet' => '0',
+                'token'        => 'debug_session_token_' . $phone,
+                'referral_code' => 'ELEV8',
+                'status'       => '1',
+                'poker_table_id' => '0',
+                'table_id'     => '0'
+            ]]
+        ]);
+    }
+
+    /**
+     * POST /api/User/wallet
+     */
+    public function wallet()
+    {
+        return $this->respond([
+            'message' => 'Wallet fetched successfully',
+            'wallet' => '1000',
+            'winning_wallet' => '0',
+            'bonus_wallet' => '0',
+            'unutilized_wallet' => '0',
+            'code' => 200
         ]);
     }
 

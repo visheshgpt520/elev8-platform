@@ -167,6 +167,92 @@ io.on('connection', (socket) => {
     });
 });
 
+// ==========================================
+// POKER NAMESPACE LOGIC
+// ==========================================
+const pokerIo = io.of('/poker');
+
+pokerIo.on('connection', (socket) => {
+    console.log(`[Poker] New connection: ${socket.id}`);
+
+    // Join Table
+    socket.on('table-users', (data) => {
+        console.log(`[Poker] table-users request:`, data);
+        
+        // Mock successful table join response
+        // Unity PokerJoinTableResponse model expects code & table_data array
+        const responseData = {
+            message: "Table joined successfully",
+            code: 200,
+            table_data: [{
+                id: "1",
+                poker_table_id: data.blind_1 === "25" ? "2" : "1",
+                user_id: data.user_id,
+                seat_position: "1",
+                role: "1",
+                game_wallet: "1000",
+                added_date: new Date().toISOString(),
+                updated_date: new Date().toISOString(),
+                isDeleted: "0",
+                user_type: "bot",
+                name: "Debug Player",
+                mobile: "8989587529",
+                profile_pic: "",
+                wallet: "1000",
+                master_boot_value: data.blind_1 || "5"
+            }]
+        };
+
+        // Send back to the user
+        socket.emit('table-users', JSON.stringify(responseData));
+        
+        // Also fire the trigger to say table is ready
+        setTimeout(() => {
+            socket.emit('trigger', 'call_status');
+        }, 1000);
+    });
+
+    // Start Game
+    socket.on('start-game', (data) => {
+        console.log(`[Poker] start-game request:`, data);
+        
+        // Unity expects start-game string response
+        socket.emit('start-game', JSON.stringify({ message: "Game starting", code: 200 }));
+        
+        // Then we send a trigger with game_id
+        setTimeout(() => {
+            const gameId = Math.floor(Math.random() * 100000).toString();
+            socket.emit('trigger', gameId);
+        }, 1000);
+    });
+
+    // Handle Chaal / Raise / Fold (Pack)
+    socket.on('chaal', (data) => {
+        console.log(`[Poker] chaal received:`, data);
+        // Echo back game trigger
+        setTimeout(() => {
+            socket.emit('trigger', data.game_id);
+        }, 500);
+    });
+
+    socket.on('pack-game', (data) => {
+        console.log(`[Poker] user packed:`, data);
+        setTimeout(() => {
+            socket.emit('trigger', 'call_status');
+        }, 500);
+    });
+
+    socket.on('leave-table', (data) => {
+        console.log(`[Poker] user left table:`, data);
+        socket.emit('leave-table', JSON.stringify({ message: "Left table", code: 200, table_data: [] }));
+    });
+
+    socket.on('disconnect', () => {
+        console.log(`[Poker] Disconnected: ${socket.id}`);
+    });
+});
+
+
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
     console.log(`-----------------------------------`);

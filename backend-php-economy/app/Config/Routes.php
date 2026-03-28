@@ -62,3 +62,22 @@ $routes->group('economy', function ($routes) {
     $routes->post('settle_match', 'EconomyController::settleMatch');
     $routes->post('manual_fiat_settlement', 'EconomyController::manualFiatSettlement');
 });
+
+// Added APIs for User Profile/Wallet missing endpoints
+$routes->group('api/User', function ($routes) {
+    $routes->post('profile', 'User::profile');
+    $routes->post('wallet', 'User::wallet');
+});
+$routes->group('api/user', function ($routes) {
+    $routes->post('profile', 'User::profile');
+    $routes->post('wallet', 'User::wallet');
+});
+
+// --------------------------------------------------------------------
+// POKER API ENDPOINTS
+// --------------------------------------------------------------------
+$routes->group('api/poker', ['filter' => 'cors'], function($routes) {
+    $routes->post('get_table_master', 'PokerController::get_table_master');
+    $routes->post('status', 'PokerController::status');
+    $routes->options('(:any)', 'PokerController::options'); // CORS Preflight handling
+});
