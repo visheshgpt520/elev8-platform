@@ -39,10 +39,11 @@ const PokerGame = () => {
                 </div>
                 
                 <iframe 
-                    src="/Poker-game/index.html"
+                    src="/poker-game/index.html"
                     className="w-full h-full border-none relative z-10"
                     title="Elev8 Poker"
                     allow="autoplay; fullscreen"
+                    onLoad={() => console.log('[Iframe] Unity loader source loaded')}
                 />
             </div>
         </div>
