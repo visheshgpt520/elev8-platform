@@ -74,12 +74,31 @@ class PokerController extends ResourceController
     {
         $tableId = $this->request->getVar('poker_table_id') ?? '1';
         $gameId = $this->request->getVar('game_id') ?? '0';
+        $userId = $this->request->getVar('user_id') ?? '99999'; // Default to debug user
 
         // Fake response matching Unity's PokerGameData model
         return $this->respond([
             'message' => 'status',
             'code' => 200,
-            'table_users' => [],
+            'table_users' => [
+                [
+                    'id' => '1',
+                    'user_id' => $userId,
+                    'seat_position' => '1',
+                    'role' => '1',
+                    'game_wallet' => '1000',
+                    'added_date' => date('Y-m-d H:i:s'),
+                    'updated_date' => date('Y-m-d H:i:s'),
+                    'isDeleted' => '0',
+                    'user_type' => 'bot',
+                    'name' => 'Debug Player',
+                    'mobile' => '8989587529',
+                    'profile_pic' => '',
+                    'wallet' => '1000',
+                    'poker_table_id' => $tableId,
+                    'master_boot_value' => '10'
+                ]
+            ],
             'table_detail' => [
                 'id' => $tableId,
                 'master_table_id' => $tableId,
