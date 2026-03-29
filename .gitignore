@@ -24,6 +24,7 @@ vendor/
 dist/
 build/
 out/
+!frontend-web/public/poker-game/Build/
 
 # Logs
 logs
