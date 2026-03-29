@@ -97,7 +97,7 @@
          Only shown during deep-link mode (?game=xxx)
          Hidden by Unity C# calling hideGlobalLoader() via jslib
          ============================================================ -->
-    <div id="global-loader">
+    <div id="global-loader" style="display: none;">
       <img class="loader-logo" src="logo.png" alt="Loading...">
       <div class="loader-spinner"></div>
       <div class="loader-text">Loading Game...</div>
@@ -131,11 +131,11 @@
     <script>
       const hideFullScreenButton = "";
       const buildUrl = "Build";
-      const loaderUrl = buildUrl + "/PokerBuild.loader.js";
+      const loaderUrl = buildUrl + "/Poker Build.loader.js";
       const config = {
-        dataUrl: buildUrl + "/PokerBuild.data",
-        frameworkUrl: buildUrl + "/PokerBuild.framework.js",
-        codeUrl: buildUrl + "/PokerBuild.wasm",
+        dataUrl: buildUrl + "/Poker Build.data",
+        frameworkUrl: buildUrl + "/Poker Build.framework.js",
+        codeUrl: buildUrl + "/Poker Build.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "Lets Card Best",
